@@ -1,7 +1,7 @@
 import pygame
-import math  # For distance regning
+import math  # For distance calculation
 
-# Starter Pygame
+# Initialiser Pygame
 pygame.init()
 
 # Skærmstørrelse
@@ -19,7 +19,7 @@ GREEN = (0, 255, 0)
 GRAVITY = 0.5
 JUMP_STRENGTH = -10
 PLAYER_SPEED = 5
-KNOCKBACK_FORCE = 3
+KNOCKBACK_FORCE = 10
 FRICTION = 0.85
 PLAYER_RADIUS = 25  # Juster radius til ellipse-formen (halv bredde og højde)
 
@@ -84,7 +84,7 @@ while run:
     # Beregn afstanden mellem spillerne
     distance = math.dist(center1, center2)  # Brug math.dist til at beregne den faktiske afstand mellem spillernes midtpunkter
 
-    # Hvis afstanden er mindre end summen af radiuserne (dvs. de overlapper)
+    # Hvis afstanden er mindre end summen af radierne (det vil sige de overlapper)
     if distance < PLAYER_RADIUS * 2:  # 2 gange radiusen fordi vi sammenligner hele diameteren
         overlap = PLAYER_RADIUS * 2 - distance  # Hvor meget de overlapper
         
@@ -105,7 +105,7 @@ while run:
         player2.vel_x = KNOCKBACK_FORCE * knockback_direction  # Anvend knockback på spiller 2
     
     pygame.display.update()  # Opdater skærmen
-    clock.tick(60)  # Sæt spillet til at køre ved 60 FPS
+    clock.tick(60)  # Sætter spillet til at køre ved 60 FPS
     
     for event in pygame.event.get():  # Gennemgå alle hændelser
         if event.type == pygame.QUIT:  # Hvis spilleren lukker vinduet
