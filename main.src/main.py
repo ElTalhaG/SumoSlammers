@@ -19,25 +19,28 @@ def håndter_kollision(spiller1, spiller2):
     
     # Hvis spillerne rører hinanden
     if afstand < SPILLER_STØRRELSE * 2 and not (spiller1.er_død or spiller2.er_død):
-        # Find ud af hvem der er angriberen baseret på bevægelse
-        spiller1_bevæger = abs(spiller1.fart_x) > 1
-        spiller2_bevæger = abs(spiller2.fart_x) > 1
+        # Bestem retning baseret på spillernes position
+        retning = 1 if centrum1[0] < centrum2[0] else -1
         
-        # Hvis kun én spiller bevæger sig, er de angriberen
-        if spiller1_bevæger and not spiller2_bevæger:
-            # Spiller 1 er angriberen
-            retning = 1 if spiller1.fart_x > 0 else -1
-            kraft = GRUND_SKUB * (2 if spiller1.dasher else 1)
-            spiller2.skade = min(spiller2.skade + SKADE_MÆNGDE, MAX_SKADE)
-            spiller2.bliv_skubbet((retning, -0.5), kraft)
+        # Beregn kraft baseret på hastighed og dash
+        spiller1_kraft = abs(spiller1.fart_x) * (2 if spiller1.dasher else 1)
+        spiller2_kraft = abs(spiller2.fart_x) * (2 if spiller2.dasher else 1)
+        
+        # Giv skade og knockback baseret på hvem der er mest aktiv
+        if spiller1.dasher or spiller1_kraft > 2:
+            kraft = GRUND_SKUB * (2.5 if spiller1.dasher else 1)
+            # Øg knockback baseret på skade
+            kraft *= (1 + spiller2.skade / 50)
+            spiller2.skade = min(spiller2.skade + SKADE_MÆNGDE * (1.5 if spiller1.dasher else 1), MAX_SKADE)
+            spiller2.bliv_skubbet((retning, -0.2), kraft)  # Mindre lodret komponent
             
-        elif spiller2_bevæger and not spiller1_bevæger:
-            # Spiller 2 er angriberen
-            retning = 1 if spiller2.fart_x > 0 else -1
-            kraft = GRUND_SKUB * (2 if spiller2.dasher else 1)
-            spiller1.skade = min(spiller1.skade + SKADE_MÆNGDE, MAX_SKADE)
-            spiller1.bliv_skubbet((retning, -0.5), kraft)
-            
+        if spiller2.dasher or spiller2_kraft > 2:
+            kraft = GRUND_SKUB * (2.5 if spiller2.dasher else 1)
+            # Øg knockback baseret på skade
+            kraft *= (1 + spiller1.skade / 50)
+            spiller1.skade = min(spiller1.skade + SKADE_MÆNGDE * (1.5 if spiller2.dasher else 1), MAX_SKADE)
+            spiller1.bliv_skubbet((-retning, -0.2), kraft)  # Mindre lodret komponent
+        
         # Skub spillerne fra hinanden for at undgå overlap
         overlap = SPILLER_STØRRELSE * 2 - afstand
         if centrum1[0] < centrum2[0]:
@@ -76,9 +79,9 @@ def main():
             if event.type == pygame.QUIT:
                 kør = False
         
-        # Opdater spillere
-        spiller1.bevæg(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_LSHIFT)
-        spiller2.bevæg(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_RSHIFT)
+        # Opdater spillere med nye dash controls (ned-taster)
+        spiller1.bevæg(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s)
+        spiller2.bevæg(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN)
         
         spiller1_klar = spiller1.opdater()
         spiller2_klar = spiller2.opdater()

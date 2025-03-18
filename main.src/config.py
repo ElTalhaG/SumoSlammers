@@ -16,16 +16,16 @@ BEVÆGELSE_FART = 5     # Hvor hurtigt spillerne bevæger sig
 BREMSE = 0.85          # Hvor hurtigt spillerne bremser (0-1)
 
 # Kamp indstillinger
-GRUND_SKUB = 5         # Minimum kraft når spillere kolliderer
-MAX_SKUB = 25          # Maksimum kraft når spillere kolliderer
+GRUND_SKUB = 8         # Minimum kraft når spillere kolliderer
+MAX_SKUB = 35          # Maksimum kraft når spillere kolliderer
 SPILLER_STØRRELSE = 25 # Spillerens radius
-SKADE_MÆNGDE = 5      # Hvor meget skade der gives ved hit
+SKADE_MÆNGDE = 7      # Hvor meget skade der gives ved hit
 MAX_SKADE = 100       # Maksimal skade en spiller kan have
 
 # Dash indstillinger
-DASH_KRAFT = 15        # Hvor hurtigt man bevæger sig under et dash
-DASH_LÆNGDE = 10       # Hvor mange frames et dash varer
-DASH_VENTETID = 250     # Antal frames mellem hver dash
+DASH_KRAFT = 20        # Hvor hurtigt man bevæger sig under et dash
+DASH_LÆNGDE = 12       # Hvor mange frames et dash varer
+DASH_VENTETID = 200    # Antal frames mellem hver dash
 
 # Platform indstillinger
 PLATFORM_X = 100       # Platformens start x-position

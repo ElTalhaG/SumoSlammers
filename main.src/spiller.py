@@ -15,7 +15,7 @@ class Spiller:
         # Kamp statistikker
         self.skade = 0                         # Nuværende skade procent
         self.point = 0                         # Antal point/sejre
-        
+
         # Status flags
         self.lammet = False                    # Om spilleren er lammet efter et hit
         self.lammelse_tid = 0                  # Hvor længe spilleren er lammet
@@ -124,13 +124,13 @@ class Spiller:
         skub_bonus = 1 + (self.skade / 100)
         samlet_kraft = min(kraft * skub_bonus, MAX_SKUB)
         
-        # Anvend knockback
-        self.fart_x = retning[0] * samlet_kraft
-        self.fart_y = retning[1] * samlet_kraft - 5  # Lidt ekstra op-kraft
+        # Anvend knockback med mere vandret kraft
+        self.fart_x = retning[0] * samlet_kraft * 1.5  # Øget vandret kraft
+        self.fart_y = retning[1] * samlet_kraft - 2    # Reduceret lodret kraft
         
         # Lam spilleren kortvarigt
         self.lammet = True
-        self.lammelse_tid = int(10 * skub_bonus)
+        self.lammelse_tid = int(10 * skub_bonus)  # Lammelse skalerer med skade
     
     def er_faldet_ned(self):
         """Tjek om spilleren er faldet af platformen"""
